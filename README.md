@@ -16,3 +16,7 @@ Word Analysis: the user may see which words were used to calculate a certain poi
 to run this app the user may use the following command in your R session:
 
 shiny::runGitHub(repo="SentimentAnalysis",username="R-S-P-MODELS")
+
+If you want to run as a docker container you can clone this repository and use docker build .
+
+The program will be run on port 3838
