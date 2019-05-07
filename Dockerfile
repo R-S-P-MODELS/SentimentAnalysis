@@ -38,6 +38,8 @@ RUN R -e "install.packages(c('dplyr', 'stringr','tidytext','tidyr'), repos='http
 COPY app.R  app.R
 COPY Analise_texto.R Analise_texto.R
 COPY sentimentscript.R sentimentscript.R
+COPY LexiconPortugues.csv LexiconPortugues.csv
+COPY LexiconPortuguesPositivevsNegative.csv LexiconPortuguesPositivevsNegative.csv
 EXPOSE 3838
 
 CMD ["R", "-e", "shiny::runApp('app.R',port=3838,host='0.0.0.0',launch.browser=FALSE)"]
