@@ -54,6 +54,8 @@ ui <- fluidPage(
          tabPanel("LocalSentiment2 by sentiment",plotlyOutput("distPlot2Senti")),
          tabPanel("CumulativeSentiment",plotlyOutput("Saida")),
          tabPanel("CumulativeSentiment2",plotlyOutput("Saida2")),
+         tabPanel("CumulativeSentimentbySentiment",plotlyOutput("distPlotSentiCum")),
+         tabPanel("CumulativeSentimentbySentiment2",plotlyOutput("distPlotSentiCum2")),
          tabPanel("WordAnalysis",verbatimTextOutput("Informacoes"),tableOutput('Tabela')),
          tabPanel("WordAnalysis2",verbatimTextOutput("Informacoes2"),tableOutput('Tabela2'))
        #  tabPanel("CompareLocalSentiment",plotlyOutput("LocalComparative")),
@@ -65,8 +67,10 @@ ui <- fluidPage(
         ),
        h3("Aplicativo desenvolvido por Rafael Silva Pereira!\n\n"),
        h4("Em caso de duvidas ou problemas favor entrar em contato\n\n"),
-       h4("Para gerar o grafico a primeira vez clique para completar o dataset, não será nescessario para futuras explorações\n\n"),
-       h4("r.s.p.models@gmail.com")
+       h4("Insira um arquivo PDF para comecar sua analise\n\n"),
+       h4("Email de contato: r.s.p.models@gmail.com")
+    
+       
       )
    )
 ) 
@@ -105,7 +109,7 @@ server <- function(input, output) {
         a=ProcArquivo2()
       #a=1:100
       print(length(a))
-      sliderInput("Intervalo","Bloco de texto selecionado",min=0,max=as.integer(length(a)/input$Bloco),value=1)
+      sliderInput("Intervalo","Bloco de texto selecionado",min=0,max=as.integer(length(a)/input$Bloco),value=1,step=1)
     }
     
   })
@@ -113,7 +117,7 @@ server <- function(input, output) {
   output$Intervalo2<-renderUI({
     if(input$Referenciador=="WordAnalysis2"){
       a=ProcArquivo2()
-      sliderInput("Intervalo2","Bloco de texto selecionado",min=0,max=as.integer(length(a)/input$Bloco))
+      sliderInput("Intervalo2","Bloco de texto selecionado",min=0,max=as.integer(length(a)/input$Bloco),step=1)
     }
     
   })
@@ -129,7 +133,7 @@ server <- function(input, output) {
       # b=ConversorMatriz(unlist(a),reject)
       # b=MatrizDistanciasPalavras(b,method)
       a=ProcArquivo()
-      texterCum(a,input$Bloco)  
+      texterCum(a,input$Bloco,input$linguagens)  
       #if(input$escolhas=="Media")
       #   grafico= ProcessoShiny(caminho=input$file1$datapath,reject=input$Palavras,graph="gg",method="media",linguagem=input$linguagens)
       # else if(input$escolhas=="Desvio Padrao")
@@ -149,7 +153,7 @@ server <- function(input, output) {
       # b=ConversorMatriz(unlist(a),reject)
       # b=MatrizDistanciasPalavras(b,method)
       a=ProcArquivo2()
-      texterCum(a,input$Bloco)  
+      texterCum(a,input$Bloco,input$linguagens)  
       #if(input$escolhas=="Media")
       #   grafico= ProcessoShiny(caminho=input$file1$datapath,reject=input$Palavras,graph="gg",method="media",linguagem=input$linguagens)
       # else if(input$escolhas=="Desvio Padrao")
@@ -171,7 +175,7 @@ server <- function(input, output) {
       # b=ConversorMatriz(unlist(a),reject)
       # b=MatrizDistanciasPalavras(b,method)
        a=ProcArquivo()
-       texterLocal(a,input$Bloco)  
+       texterLocal(a,input$Bloco,input$linguagens)  
      #if(input$escolhas=="Media")
     #   grafico= ProcessoShiny(caminho=input$file1$datapath,reject=input$Palavras,graph="gg",method="media",linguagem=input$linguagens)
     # else if(input$escolhas=="Desvio Padrao")
@@ -191,7 +195,7 @@ server <- function(input, output) {
        # b=ConversorMatriz(unlist(a),reject)
        # b=MatrizDistanciasPalavras(b,method)
        a=ProcArquivo2()
-       texterLocal(a,input$Bloco)  
+       texterLocal(a,input$Bloco,input$linguagens)  
        #if(input$escolhas=="Media")
        #   grafico= ProcessoShiny(caminho=input$file1$datapath,reject=input$Palavras,graph="gg",method="media",linguagem=input$linguagens)
        # else if(input$escolhas=="Desvio Padrao")
@@ -211,7 +215,47 @@ server <- function(input, output) {
        # b=ConversorMatriz(unlist(a),reject)
        # b=MatrizDistanciasPalavras(b,method)
        a=ProcArquivo()
-       texterLocalEmotions(a,input$Bloco)  
+       texterLocalEmotions(a,input$Bloco,input$linguagens)  
+       #if(input$escolhas=="Media")
+       #   grafico= ProcessoShiny(caminho=input$file1$datapath,reject=input$Palavras,graph="gg",method="media",linguagem=input$linguagens)
+       # else if(input$escolhas=="Desvio Padrao")
+       #   grafico=ProcessoShiny(caminho=input$file1$datapath,reject=input$Palavras,graph="gg",method="desvio",input$linguagens)
+       # else if(input$escolhas=="Ambos")
+       #   grafico=ProcessoShiny(caminho=input$file1$datapath,reject=input$Palavras,graph="gg",method="ambos",input$linguagens)
+       # ggplotly(grafico)
+     }
+   })
+   
+   output$distPlotSentiCum <- renderPlotly({
+     if(!is.null(input$file1)){
+       # caminho=input$file1$datapath
+       # reject=input$Palavras
+       # a=leitura(caminho)
+       # a=Palavras(a)
+       # b=ConversorMatriz(unlist(a),reject)
+       # b=MatrizDistanciasPalavras(b,method)
+       a=ProcArquivo()
+       texterCumulativeEmotions(a,input$Bloco,input$linguagens)  
+       #if(input$escolhas=="Media")
+       #   grafico= ProcessoShiny(caminho=input$file1$datapath,reject=input$Palavras,graph="gg",method="media",linguagem=input$linguagens)
+       # else if(input$escolhas=="Desvio Padrao")
+       #   grafico=ProcessoShiny(caminho=input$file1$datapath,reject=input$Palavras,graph="gg",method="desvio",input$linguagens)
+       # else if(input$escolhas=="Ambos")
+       #   grafico=ProcessoShiny(caminho=input$file1$datapath,reject=input$Palavras,graph="gg",method="ambos",input$linguagens)
+       # ggplotly(grafico)
+     }
+   })
+   
+   output$distPlotSentiCum2 <- renderPlotly({
+     if(!is.null(input$file2)){
+       # caminho=input$file1$datapath
+       # reject=input$Palavras
+       # a=leitura(caminho)
+       # a=Palavras(a)
+       # b=ConversorMatriz(unlist(a),reject)
+       # b=MatrizDistanciasPalavras(b,method)
+       a=ProcArquivo2()
+       texterCumulativeEmotions(a,input$Bloco,input$linguagens)  
        #if(input$escolhas=="Media")
        #   grafico= ProcessoShiny(caminho=input$file1$datapath,reject=input$Palavras,graph="gg",method="media",linguagem=input$linguagens)
        # else if(input$escolhas=="Desvio Padrao")
@@ -231,7 +275,7 @@ server <- function(input, output) {
        # b=ConversorMatriz(unlist(a),reject)
        # b=MatrizDistanciasPalavras(b,method)
        a=ProcArquivo2()
-       texterLocalEmotions(a,input$Bloco)  
+       texterLocalEmotions(a,input$Bloco,input$linguagens)  
        #if(input$escolhas=="Media")
        #   grafico= ProcessoShiny(caminho=input$file1$datapath,reject=input$Palavras,graph="gg",method="media",linguagem=input$linguagens)
        # else if(input$escolhas=="Desvio Padrao")
@@ -301,7 +345,7 @@ server <- function(input, output) {
           print("passei aqui")
           a=ProcArquivo()
           b=ProcArquivo2()
-          textLocalComp(a,b,input$Blocos)
+          textLocalComp(a,b,input$Blocos,input$linguagens)
        }
       
      
@@ -314,7 +358,7 @@ server <- function(input, output) {
          print("Passei aqui")
          a=ProcArquivo()
          b=ProcArquivo2()
-         textCumComp(a,b,input$Blocos)
+         textCumComp(a,b,input$Blocos,input$linguagens)
        }
        
      

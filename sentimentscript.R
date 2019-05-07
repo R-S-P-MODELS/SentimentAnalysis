@@ -1,4 +1,4 @@
-textar=function(){
+textar=function(linguagem){
 library(janeaustenr)
 library(dplyr)
 library(stringr)
@@ -15,12 +15,16 @@ tidy_books <- austen_books() %>%
 
 library(tidyr)
 
+if(linguagem=="en")
+  Lexicon=get_sentiments("bing")
+else if(linguagem=="pt")
+  Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+
 jane_austen_sentiment <- tidy_books %>%
-  inner_join(get_sentiments("bing")) %>%
-  count(book, index = linenumber %/% 80, sentiment) %>%
+  inner_join(Lexicon) %>%
+  count(book, index = linenumber %/% block, sentiment) %>%
   spread(sentiment, n, fill = 0) %>%
   mutate(sentiment = positive - negative)
-
 library(plotly)
 
 p1=ggplot(jane_austen_sentiment, aes(index, sentiment, fill = book)) +
@@ -30,7 +34,7 @@ p1=ggplot(jane_austen_sentiment, aes(index, sentiment, fill = book)) +
 ggplotly(p1)
 }
 
-texterCum=function(a,block=80){
+texterCum=function(a,block=80,linguagem){
 #library(janeaustenr)
 library(dplyr)
 library(stringr)
@@ -41,8 +45,13 @@ names(tidy_books)=c("book","word","linenumber")
 
 library(tidyr)
 
+if(linguagem=="en")
+  Lexicon=get_sentiments("bing")
+else if(linguagem=="pt")
+  Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+
 jane_austen_sentiment <- tidy_books %>%
-  inner_join(get_sentiments("bing")) %>%
+  inner_join(Lexicon) %>%
   count(book, index = linenumber %/% block, sentiment) %>%
   spread(sentiment, n, fill = 0) %>%
   mutate(sentiment = positive - negative)
@@ -56,7 +65,7 @@ p1=ggplot(jane_austen_sentiment, aes(index, sentiment, fill = book)) +
 ggplotly(p1)
 }
 
-texterLocal=function(a,block=80){
+texterLocal=function(a,block=80,linguagem){
 #library(janeaustenr)
 library(dplyr)
 library(stringr)
@@ -67,12 +76,16 @@ names(tidy_books)=c("book","word","linenumber")
 
 library(tidyr)
 
+if(linguagem=="en")
+  Lexicon=get_sentiments("bing")
+else if(linguagem=="pt")
+  Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+
 jane_austen_sentiment <- tidy_books %>%
-  inner_join(get_sentiments("bing")) %>%
+  inner_join(Lexicon) %>%
   count(book, index = linenumber %/% block, sentiment) %>%
   spread(sentiment, n, fill = 0) %>%
   mutate(sentiment = positive - negative)
-
 library(plotly)
 #jane_austen_sentiment$sentiment=cumsum(jane_austen_sentiment$sentiment)
 p1=ggplot(jane_austen_sentiment, aes(index, sentiment, fill = book)) +
@@ -82,7 +95,7 @@ p1=ggplot(jane_austen_sentiment, aes(index, sentiment, fill = book)) +
 ggplotly(p1)
 }
 
-textLocalComp=function(a,b,block=80){
+textLocalComp=function(a,b,block=80,linguagem){
   #library(janeaustenr)
   library(dplyr)
   library(stringr)
@@ -93,20 +106,29 @@ textLocalComp=function(a,b,block=80){
   
   library(tidyr)
   
+  if(linguagem=="en")
+    Lexicon=get_sentiments("bing")
+  else if(linguagem=="pt")
+    Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+  
   jane_austen_sentiment <- tidy_books %>%
-    inner_join(get_sentiments("bing")) %>%
+    inner_join(Lexicon) %>%
     count(book, index = linenumber %/% block, sentiment) %>%
     spread(sentiment, n, fill = 0) %>%
     mutate(sentiment = positive - negative)
-  
   
   tidy_books <-data.frame("Sentimento2",b,1:length(b))
   names(tidy_books)=c("book","word","linenumber")
   
   library(tidyr)
   
-  jane_austen_sentiment2 <- tidy_books %>%
-    inner_join(get_sentiments("bing")) %>%
+  if(linguagem=="en")
+    Lexicon=get_sentiments("bing")
+  else if(linguagem=="pt")
+    Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+  
+  jane_austen_sentiment <- tidy_books %>%
+    inner_join(Lexicon) %>%
     count(book, index = linenumber %/% block, sentiment) %>%
     spread(sentiment, n, fill = 0) %>%
     mutate(sentiment = positive - negative)
@@ -123,7 +145,7 @@ textLocalComp=function(a,b,block=80){
 }
 
 
-textCumComp=function(a,b,block=80){
+textCumComp=function(a,b,block=80,linguagem){
   #library(janeaustenr)
   library(dplyr)
   library(stringr)
@@ -138,8 +160,13 @@ textCumComp=function(a,b,block=80){
   
   library(tidyr)
   
+  if(linguagem=="en")
+    Lexicon=get_sentiments("bing")
+  else if(linguagem=="pt")
+    Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+  
   jane_austen_sentiment <- tidy_books %>%
-    inner_join(get_sentiments("bing")) %>%
+    inner_join(Lexicon) %>%
     count(book, index = linenumber %/% block, sentiment) %>%
     spread(sentiment, n, fill = 0) %>%
     mutate(sentiment = positive - negative)
@@ -154,8 +181,13 @@ textCumComp=function(a,b,block=80){
   
   library(tidyr)
   print("Vai calcular o segundo")
-  jane_austen_sentiment2 <- tidy_books %>%
-    inner_join(get_sentiments("bing")) %>%
+  if(linguagem=="en")
+    Lexicon=get_sentiments("bing")
+  else if(linguagem=="pt")
+    Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+  
+  jane_austen_sentiment <- tidy_books %>%
+    inner_join(Lexicon) %>%
     count(book, index = linenumber %/% block, sentiment) %>%
     spread(sentiment, n, fill = 0) %>%
     mutate(sentiment = positive - negative)
@@ -175,7 +207,7 @@ textCumComp=function(a,b,block=80){
   ggplotly(p1)
 }
 
-texterLocalEmotions=function(a,block=80){
+texterLocalEmotions=function(a,block=80,linguagem){
   #library(janeaustenr)
   library(dplyr)
   library(stringr)
@@ -185,9 +217,12 @@ texterLocalEmotions=function(a,block=80){
   names(tidy_books)=c("book","word","linenumber")
   
   library(tidyr)
-  
+  if(linguagem=="en")
+    Lexicon=get_sentiments("nrc")
+  else if(linguagem=="pt")
+    Lexicon=read.csv("~/SentimentAnalysis/LexiconPortugues.csv",header=TRUE)
   jane_austen_sentiment <- tidy_books %>%
-    inner_join(get_sentiments("nrc")) %>%
+    inner_join(Lexicon) %>%
     count(book, index = linenumber %/% block, sentiment) %>%
     spread(sentiment, n, fill = 0) #%>%
     #mutate(sentiment = positive - negative)
@@ -220,3 +255,58 @@ texterLocalEmotions=function(a,block=80){
 }
 
 
+texterCumulativeEmotions=function(a,block=80,linguagem){
+  #library(janeaustenr)
+  library(dplyr)
+  library(stringr)
+  library(tidytext)
+  
+  tidy_books <-data.frame("Sentimento",a,1:length(a))
+  names(tidy_books)=c("book","word","linenumber")
+  
+  library(tidyr)
+  if(linguagem=="en")
+    Lexicon=get_sentiments("nrc")
+  else if(linguagem=="pt")
+    Lexicon=read.csv("~/SentimentAnalysis/LexiconPortugues.csv",header=TRUE)
+  jane_austen_sentiment <- tidy_books %>%
+    inner_join(Lexicon) %>%
+    count(book, index = linenumber %/% block, sentiment) %>%
+    spread(sentiment, n, fill = 0) #%>%
+  #mutate(sentiment = positive - negative)
+  jane_austen_sentiment$anger=cumsum(jane_austen_sentiment$anger)
+  jane_austen_sentiment$anticipation=cumsum(jane_austen_sentiment$anticipation)
+  jane_austen_sentiment$disgust=cumsum(jane_austen_sentiment$disgust)
+  jane_austen_sentiment$fear=cumsum(jane_austen_sentiment$fear)
+  jane_austen_sentiment$joy=cumsum(jane_austen_sentiment$joy)
+  jane_austen_sentiment$sadness=cumsum(jane_austen_sentiment$sadness)
+  jane_austen_sentiment$surprise=cumsum(jane_austen_sentiment$surprise)
+  jane_austen_sentiment$trust=cumsum(jane_austen_sentiment$trust)
+  
+  df1=data.frame(jane_austen_sentiment$index,jane_austen_sentiment$anger,"anger")
+  df2=data.frame(jane_austen_sentiment$index,jane_austen_sentiment$anticipation,"anticipation")
+  df3=data.frame(jane_austen_sentiment$index,jane_austen_sentiment$disgust,"disgust")
+  df4=data.frame(jane_austen_sentiment$index,jane_austen_sentiment$fear,"fear")
+  df5=data.frame(jane_austen_sentiment$index,jane_austen_sentiment$joy,"joy")
+  df6=data.frame(jane_austen_sentiment$index,jane_austen_sentiment$sadness,"sadness")
+  df7=data.frame(jane_austen_sentiment$index,jane_austen_sentiment$surprise,"surprise")
+  df8=data.frame(jane_austen_sentiment$index,jane_austen_sentiment$trust,"trust")
+  names(df1)=names(df2)=names(df3)=names(df4)=names(df5)=names(df6)=names(df7)=names(df8)=c('Index','Emotion','Name')
+  df1=rbind(df1,df2,df3,df4,df5,df6,df7,df8)
+  library(plotly)
+  #jane_austen_sentiment$sentiment=cumsum(jane_austen_sentiment$sentiment)
+  #p1=ggplot(jane_austen_sentiment, aes(x=index)) +
+  #  geom_col(show.legend = FALSE,aes(y=anger,fill="anger")) + 
+  # geom_col(show.legend = FALSE,aes(y=anticipation,fill="anticipation")) +
+  #  geom_col(show.legend = FALSE,aes(y=disgust,fill="disgust")) +
+  #  geom_col(show.legend = FALSE,aes(y=fear,fill="fear")) +
+  #  geom_col(show.legend = FALSE,aes(y=joy,fill="joy")) +
+  #  geom_col(show.legend = FALSE,aes(y=sadness,fill="sadness")) +
+  #  geom_col(show.legend = FALSE,aes(y=surprise,fill="surprise")) +
+  # geom_col(show.legend = FALSE,aes(y=trust,fill="trust")) 
+  #geom_col(show.legend = FALSE,aes(y=positive,fill="positive")) +
+  #geom_col(show.legend = FALSE,aes(y=negative,fill="negative")) 
+  
+  p1=ggplot(df1,aes(x=Index,y=Emotion,col=Name)) + geom_line(show.legend = FALSE)
+  ggplotly(p1)
+}
