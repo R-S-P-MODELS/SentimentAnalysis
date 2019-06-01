@@ -20,3 +20,5 @@ shiny::runGitHub(repo="SentimentAnalysis",username="R-S-P-MODELS")
 If you want to run as a docker container you can clone this repository and use docker build .
 
 The program will be run on port 3838
+
+You can also pull the image from dockerhub with docker pull rspmodels/sentimentanalysis
