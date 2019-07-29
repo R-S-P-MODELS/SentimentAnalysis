@@ -56,8 +56,8 @@ ui <- fluidPage(
          tabPanel("CumulativeSentiment2",plotlyOutput("Saida2")),
          tabPanel("CumulativeSentimentbySentiment",plotlyOutput("distPlotSentiCum")),
          tabPanel("CumulativeSentimentbySentiment2",plotlyOutput("distPlotSentiCum2")),
-         tabPanel("WordAnalysis",verbatimTextOutput("Informacoes"),tableOutput('Tabela')),
-         tabPanel("WordAnalysis2",verbatimTextOutput("Informacoes2"),tableOutput('Tabela2'))
+         tabPanel("WordAnalysis",verbatimTextOutput("Informacoes"),tableOutput('TabelaSentimentos')),
+         tabPanel("WordAnalysis2",verbatimTextOutput("Informacoes2"),tableOutput('TabelaSentimentos2'))
        #  tabPanel("CompareLocalSentiment",plotlyOutput("LocalComparative")),
         # tabPanel("CompareCumulativeSentiment",plotlyOutput("CumulativeComparative"))
          
@@ -310,6 +310,89 @@ server <- function(input, output) {
      
    }})
    
+   output$TabelaSentimentos<-renderTable({
+     if(!is.null(input$file1)){
+       #  if(input$escolhas=="Media")
+       #     d=DistanceMatrix(caminho=input$file1$datapath,reject=input$Palavras,method="media",linguagem=input$linguagens)
+       #   else if(input$escolhas=="Desvio Padrao")
+       #     d=DistanceMatrix(caminho=input$file1$datapath,reject=input$Palavras,method="desvio",linguagem=input$linguagens)
+       #z=BestCluster(Calculo(),20)
+       #a=leitura(input$file1$datapath)
+       #a=Palavras(a,input$linguagens)
+       a=ProcArquivo()
+       ini=input$Bloco*input$Intervalo
+       fim=(input$Bloco*(input$Intervalo+1) -1)
+       # print(ini)
+       # print(fim)
+       b=a[ini:fim]
+       #print(b)
+       library(dplyr)
+       library(stringr)
+       library(tidytext)
+       
+       tidy_books <-data.frame(b,b,1:length(b))
+       names(tidy_books)=c("word","book","linenumber")
+       linguagem=input$linguagens
+       block=input$Bloco
+       library(tidyr)
+       if(linguagem=="en")
+         Lexicon=get_sentiments("nrc")
+       else if(linguagem=="pt")
+         Lexicon=read.csv("~/SentimentAnalysis/LexiconPortugues.csv",header=TRUE)
+       jane_austen_sentiment <- tidy_books %>%
+         inner_join(Lexicon) %>%
+         count(word, index = linenumber %/% block, sentiment) %>%
+         spread(sentiment, n, fill = 0)
+       return(jane_austen_sentiment)
+       #z=Clusterizacao()
+       #vec=z$cluster[which(as.numeric(z$cluster)==as.numeric(input$selecionador))]
+       #vec=names(vec)
+       
+       #print(vec)
+       
+     }})
+   
+   output$TabelaSentimentos2<-renderTable({
+     if(!is.null(input$file2)){
+       #  if(input$escolhas=="Media")
+       #     d=DistanceMatrix(caminho=input$file1$datapath,reject=input$Palavras,method="media",linguagem=input$linguagens)
+       #   else if(input$escolhas=="Desvio Padrao")
+       #     d=DistanceMatrix(caminho=input$file1$datapath,reject=input$Palavras,method="desvio",linguagem=input$linguagens)
+       #z=BestCluster(Calculo(),20)
+       #a=leitura(input$file1$datapath)
+       #a=Palavras(a,input$linguagens)
+       a=ProcArquivo2()
+       ini=input$Bloco*input$Intervalo
+       fim=(input$Bloco*(input$Intervalo+1) -1)
+       # print(ini)
+       # print(fim)
+       b=a[ini:fim]
+       #print(b)
+       library(dplyr)
+       library(stringr)
+       library(tidytext)
+       
+       tidy_books <-data.frame(b,b,1:length(b))
+       names(tidy_books)=c("word","book","linenumber")
+       linguagem=input$linguagens
+       block=input$Bloco
+       library(tidyr)
+       if(linguagem=="en")
+         Lexicon=get_sentiments("nrc")
+       else if(linguagem=="pt")
+         Lexicon=read.csv("~/SentimentAnalysis/LexiconPortugues.csv",header=TRUE)
+       jane_austen_sentiment <- tidy_books %>%
+         inner_join(Lexicon) %>%
+         count(word, index = linenumber %/% block, sentiment) %>%
+         spread(sentiment, n, fill = 0)
+       return(jane_austen_sentiment)
+       #z=Clusterizacao()
+       #vec=z$cluster[which(as.numeric(z$cluster)==as.numeric(input$selecionador))]
+       #vec=names(vec)
+       
+       #print(vec)
+       
+     }})
    output$Informacoes2<-renderPrint({
      if(!is.null(input$file2)){
        #  if(input$escolhas=="Media")
