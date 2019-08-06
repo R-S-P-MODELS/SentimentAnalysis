@@ -343,6 +343,7 @@ server <- function(input, output) {
          inner_join(Lexicon) %>%
          count(word, index = linenumber %/% block, sentiment) %>%
          spread(sentiment, n, fill = 0)
+       jane_austen_sentiment=jane_austen_sentiment[,-2]
        return(jane_austen_sentiment)
        #z=Clusterizacao()
        #vec=z$cluster[which(as.numeric(z$cluster)==as.numeric(input$selecionador))]
@@ -385,6 +386,8 @@ server <- function(input, output) {
          inner_join(Lexicon) %>%
          count(word, index = linenumber %/% block, sentiment) %>%
          spread(sentiment, n, fill = 0)
+       jane_austen_sentiment=jane_austen_sentiment[,-2]
+       
        return(jane_austen_sentiment)
        #z=Clusterizacao()
        #vec=z$cluster[which(as.numeric(z$cluster)==as.numeric(input$selecionador))]
