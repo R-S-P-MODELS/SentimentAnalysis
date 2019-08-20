@@ -18,7 +18,7 @@ library(tidyr)
 if(linguagem=="en")
   Lexicon=get_sentiments("bing")
 else if(linguagem=="pt")
-  Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+  Lexicon=read.csv("LexiconPortuguesPositivevsNegative.csv",header=TRUE)
 
 jane_austen_sentiment <- tidy_books %>%
   inner_join(Lexicon) %>%
@@ -48,7 +48,7 @@ library(tidyr)
 if(linguagem=="en")
   Lexicon=get_sentiments("bing")
 else if(linguagem=="pt")
-  Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+  Lexicon=read.csv("LexiconPortuguesPositivevsNegative.csv",header=TRUE)
 
 jane_austen_sentiment <- tidy_books %>%
   inner_join(Lexicon) %>%
@@ -79,7 +79,7 @@ library(tidyr)
 if(linguagem=="en")
   Lexicon=get_sentiments("bing")
 else if(linguagem=="pt")
-  Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+  Lexicon=read.csv("LexiconPortuguesPositivevsNegative.csv",header=TRUE)
 
 jane_austen_sentiment <- tidy_books %>%
   inner_join(Lexicon) %>%
@@ -109,7 +109,7 @@ textLocalComp=function(a,b,block=80,linguagem){
   if(linguagem=="en")
     Lexicon=get_sentiments("bing")
   else if(linguagem=="pt")
-    Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+    Lexicon=read.csv("LexiconPortuguesPositivevsNegative.csv",header=TRUE)
   
   jane_austen_sentiment <- tidy_books %>%
     inner_join(Lexicon) %>%
@@ -125,7 +125,7 @@ textLocalComp=function(a,b,block=80,linguagem){
   if(linguagem=="en")
     Lexicon=get_sentiments("bing")
   else if(linguagem=="pt")
-    Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+    Lexicon=read.csv("LexiconPortuguesPositivevsNegative.csv",header=TRUE)
   
   jane_austen_sentiment <- tidy_books %>%
     inner_join(Lexicon) %>%
@@ -163,7 +163,7 @@ textCumComp=function(a,b,block=80,linguagem){
   if(linguagem=="en")
     Lexicon=get_sentiments("bing")
   else if(linguagem=="pt")
-    Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+    Lexicon=read.csv("LexiconPortuguesPositivevsNegative.csv",header=TRUE)
   
   jane_austen_sentiment <- tidy_books %>%
     inner_join(Lexicon) %>%
@@ -184,7 +184,7 @@ textCumComp=function(a,b,block=80,linguagem){
   if(linguagem=="en")
     Lexicon=get_sentiments("bing")
   else if(linguagem=="pt")
-    Lexicon=read.csv("~/SentimentAnalysis/LexiconPortuguesPositivevsNegative.csv",header=TRUE)
+    Lexicon=read.csv("LexiconPortuguesPositivevsNegative.csv",header=TRUE)
   
   jane_austen_sentiment <- tidy_books %>%
     inner_join(Lexicon) %>%
@@ -220,7 +220,7 @@ texterLocalEmotions=function(a,block=80,linguagem){
   if(linguagem=="en")
     Lexicon=get_sentiments("nrc")
   else if(linguagem=="pt")
-    Lexicon=read.csv("~/SentimentAnalysis/LexiconPortugues.csv",header=TRUE)
+    Lexicon=read.csv("LexiconPortugues.csv",header=TRUE)
   jane_austen_sentiment <- tidy_books %>%
     inner_join(Lexicon) %>%
     count(book, index = linenumber %/% block, sentiment) %>%
@@ -268,7 +268,7 @@ texterCumulativeEmotions=function(a,block=80,linguagem){
   if(linguagem=="en")
     Lexicon=get_sentiments("nrc")
   else if(linguagem=="pt")
-    Lexicon=read.csv("~/SentimentAnalysis/LexiconPortugues.csv",header=TRUE)
+    Lexicon=read.csv("LexiconPortugues.csv",header=TRUE)
   jane_austen_sentiment <- tidy_books %>%
     inner_join(Lexicon) %>%
     count(book, index = linenumber %/% block, sentiment) %>%
