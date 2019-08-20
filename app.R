@@ -338,7 +338,7 @@ server <- function(input, output) {
        if(linguagem=="en")
          Lexicon=get_sentiments("nrc")
        else if(linguagem=="pt")
-         Lexicon=read.csv("~/SentimentAnalysis/LexiconPortugues.csv",header=TRUE)
+         Lexicon=read.csv("LexiconPortugues.csv",header=TRUE)
        jane_austen_sentiment <- tidy_books %>%
          inner_join(Lexicon) %>%
          count(word, index = linenumber %/% block, sentiment) %>%
@@ -381,7 +381,7 @@ server <- function(input, output) {
        if(linguagem=="en")
          Lexicon=get_sentiments("nrc")
        else if(linguagem=="pt")
-         Lexicon=read.csv("~/SentimentAnalysis/LexiconPortugues.csv",header=TRUE)
+         Lexicon=read.csv("LexiconPortugues.csv",header=TRUE)
        jane_austen_sentiment <- tidy_books %>%
          inner_join(Lexicon) %>%
          count(word, index = linenumber %/% block, sentiment) %>%
