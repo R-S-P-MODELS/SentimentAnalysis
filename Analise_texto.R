@@ -23,7 +23,7 @@ alvo=alvo[which(!(alvo %in% auxiliarVector))]
 
 #alvo= setdiff(alvo,stopwords(kind="pt"))
 
-return(alvo)
+return(tolower(alvo))
 }
 
 ConversorMatriz=function(z,reject){

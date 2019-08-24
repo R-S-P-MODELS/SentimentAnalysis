@@ -6,6 +6,7 @@
 #
 #    http://shiny.rstudio.com/
 #
+source("WorldCloud.R")
 require(plotly)
 library(shiny)
 source("Analise_texto.R")
@@ -56,6 +57,8 @@ ui <- fluidPage(
          tabPanel("CumulativeSentiment2",plotlyOutput("Saida2")),
          tabPanel("CumulativeSentimentbySentiment",plotlyOutput("distPlotSentiCum")),
          tabPanel("CumulativeSentimentbySentiment2",plotlyOutput("distPlotSentiCum2")),
+         tabPanel("SentimentWordCloud",plotOutput("Palavras1")),
+         tabPanel("SentimentWordCloud2",plotOutput("Palavras2")),
          tabPanel("WordAnalysis",verbatimTextOutput("Informacoes"),tableOutput('TabelaSentimentos')),
          tabPanel("WordAnalysis2",verbatimTextOutput("Informacoes2"),tableOutput('TabelaSentimentos2'))
        #  tabPanel("CompareLocalSentiment",plotlyOutput("LocalComparative")),
@@ -84,7 +87,7 @@ server <- function(input, output) {
     if(!is.null(input$file1)){
      a=leitura(input$file1$datapath)
      b=Palavras(a,input$linguagens)
-     return(b)
+     return( tolower(b) )
     }
     
   })
@@ -93,7 +96,7 @@ server <- function(input, output) {
     if(!is.null(input$file2)){
       a=leitura(input$file2$datapath)
       b=Palavras(a,input$linguagens)
-      return(b)
+      return(tolower(b) )
     }
     
   })
@@ -452,6 +455,33 @@ server <- function(input, output) {
    
    
    
+   output$Palavras1<-renderPlot({
+   #  Pergunta<-1
+  #   Pergunta<-GetTwitter()
+     if(!is.null(input$file1) ){
+       Pergunta=ProcArquivo()
+       
+     NuvemSentimentos(Palavras(tolower(Pergunta),input$linguagens),input$linguagens)
+       
+       
+     
+     }
+   }
+  )
+   
+   output$Palavras2<-renderPlot({
+     #  Pergunta<-1
+     #   Pergunta<-GetTwitter()
+     if(!is.null(input$file2) ){
+       Pergunta=ProcArquivo2()
+       
+       NuvemSentimentos(Palavras(tolower(Pergunta),input$linguagens),input$linguagens)
+       
+       
+       
+     }
+   }
+   )
 
    
    
