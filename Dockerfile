@@ -28,6 +28,8 @@ RUN R -e "install.packages(c('pdftools','plotly','fields','reshape2','cluster','
 # basic shiny functionality
 RUN R -e "install.packages(c('dplyr', 'stringr','tidytext','tidyr'), repos='https://cloud.r-project.org/',dependencies=TRUE)"
 
+RUN R -e "install.packages(c('tm', 'SnowballC','wordcloud','RColorBrewer'), repos='https://cloud.r-project.org/',dependencies=TRUE)"
+
 
 # copy the app to the image
 #RUN mkdir /root/Exploration
@@ -40,6 +42,8 @@ COPY Analise_texto.R Analise_texto.R
 COPY sentimentscript.R sentimentscript.R
 COPY LexiconPortugues.csv LexiconPortugues.csv
 COPY LexiconPortuguesPositivevsNegative.csv LexiconPortuguesPositivevsNegative.csv
+COPY WorldCloud.R WorldCloud.R
+COPY LexiconIngles.csv LexiconIngles.csv
 EXPOSE 3838
 
 CMD ["R", "-e", "shiny::runApp('app.R',port=3838,host='0.0.0.0',launch.browser=FALSE)"]
