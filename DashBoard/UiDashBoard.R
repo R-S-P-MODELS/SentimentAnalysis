@@ -18,7 +18,8 @@ menu<- dashboardSidebar(width = 250,
       menuItem("Local Sentiment by sentiment", tabName = "LocalSentimentbysentiment", icon = icon("heart")),
       menuItem("Cumulative Sentiment",tabName="CumulativeSentiment",icon=icon("thumbs-down")),
 menuItem("Cumulative Sentiment by Sentiment", tabName = "CumulativeSentimentbySentiment", icon = icon("heart")),
-menuItem("WordAnalysis", tabName = "WordAnalysis", icon = icon("comment"))
+menuItem("WordAnalysis", tabName = "WordAnalysis", icon = icon("comment")),
+menuItem("Word Cloud",tabName="WordCloud",icon = icon("thumbs-up"))
     ),
         selectInput(inputId = "linguagens",label = "PDF Language",choices = c("en","pt")),
 	      numericInput(inputId="Bloco",label="Number of words to calculate",min=1,max=500,value=100),
@@ -86,7 +87,18 @@ tabItem(tabName = "WordAnalysis",
 
           
         )
-      )
+      ),
+tabItem(tabName = "WordCloud",
+        fluidRow(
+          uiOutput('EscolhaFilme1'),
+          plotOutput("Palavras")
+          
+          
+          
+        )
+)
+
+
 
       
     ),

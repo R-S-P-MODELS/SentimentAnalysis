@@ -8,6 +8,7 @@
 #
 require(plotly)
 library(shiny)
+source("WordCloud.R")
 source("Analise_texto.R")
 source("sentimentscript.R")
 # Define UI for application that draws a histogram
@@ -26,6 +27,12 @@ server <- function(input, output) {
     if(!is.null(input$file1)){
       w<-ProcArquivo()
       selectInput("textoescolhido",'Which file do you want to inspect',choices=names(w))
+    }
+  })
+  output$EscolhaFilme1<-renderUI({
+    if(!is.null(input$file1)){
+      w<-ProcArquivo()
+      selectInput("textoescolhido1",'Which file do you want to inspect',choices=names(w))
     }
   })
   
@@ -321,34 +328,25 @@ server <- function(input, output) {
      }})
   
    
-   ### copy for second file
-   
-   
-   
-   #Matriz=Calculo()
-   output$LocalComparative<-renderPlotly({
-     if(!is.null(input$file2) & !is.null(input$file1) ){
-          print("passei aqui")
-          a=ProcArquivo()
-          b=ProcArquivo2()
-          textLocalComp(a,b,input$Blocos,input$linguagens)
-       }
-      
-     
-   })
-   
-   
-   output$CumulativeComparative<-renderPlotly({
-     if(!is.null(input$file2) & !is.null(input$file1) ){
+   output$Palavras<-renderPlot({
+     #  Pergunta<-1
+     #   Pergunta<-GetTwitter()
+     if(!is.null(input$file1) ){
+       Pergunta=ProcArquivo()
+       Pergunta<-Pergunta[[input$textoescolhido1]]
        
-         print("Passei aqui")
-         a=ProcArquivo()
-         b=ProcArquivo2()
-         textCumComp(a,b,input$Blocos,input$linguagens)
-       }
+       NuvemSentimentos(Palavras(tolower(Pergunta),input$linguagens),input$linguagens)
        
-     
-   })
+       
+       
+     }
+   }
+   )
+   
+
+   
+   
+   
    
    
    
